@@ -85,6 +85,8 @@ Threshold Optimization for Churn Recall
 📌 Conclusion
 This project demonstrates an end-to-end machine learning pipeline for churn prediction with real-world business optimization. By applying threshold tuning , the model achieves improved churn detection, making it highly valuable for banking applications.
 
+Dockerized API :- https://hub.docker.com/u/itsshivaam
+
 👤 Author
 Shivam Pandey
 Data Science Student | Machine Learning Enthusiast
