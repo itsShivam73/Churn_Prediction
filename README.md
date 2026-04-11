@@ -15,8 +15,8 @@ threshold tuning.
 
 ## Demo
 
-<!-- Replace YOUR_VIDEO_ID with your YouTube video ID once ready -->
-[![Bank Customer Churn Prediction Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/hqdefault.jpg)](https://youtu.be/JZmN-7Ldkm0)
+
+[![Bank Customer Churn Prediction Demo](https://img.youtube.com/vi/JZmN-7Ldkm0/hqdefault.jpg)](https://www.youtube.com/watch?v=JZmN-7Ldkm0)
 
 > Click the thumbnail above to watch the demo.
 
