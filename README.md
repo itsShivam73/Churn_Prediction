@@ -138,27 +138,48 @@ Three engineered features were added on top of the raw inputs:
 
 ---
 
+
 ## Model Results
 
-### Overall comparison
+### Overall comparison (default threshold = 0.50)
 
-| Model | Precision (churn) | Recall (churn) | F1 (churn) |
-|---|---|---|---|
-| Logistic Regression | Lower | Higher (many false alarms) | Moderate |
-| Random Forest | Balanced | Balanced | Good |
-| **XGBoost** | **Balanced** | **Best** | **Best** |
+| Model | Accuracy | Precision (churn) | Recall (churn) | F1 (churn) |
+|---|---|---|---|---|
+| Logistic Regression | 73.6% | 40.1% | 69.5% | 51.0% |
+| Random Forest | 84.7% | 59.9% | 66.2% | 62.9% |
+| **XGBoost** | **84.9%** | **59.7%** | **70.2%** | **64.5%** |
 
-### XGBoost — per-class performance
+### Full per-class breakdown
 
-| Class | Precision | Recall | F1-Score |
-|---|---|---|---|
-| 0 — stays | High | High | High |
-| 1 — churns | Moderate | **80%** (after tuning) | Competitive |
+#### Logistic Regression (TN=1199, FP=408, FN=120, TP=273)
 
-> **Context:** In churn prediction, Recall on class 1 is the most business-critical metric.
-> Missing a churner costs far more than a false alarm.
+| Class | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| 0 — stays | 90.9% | 74.6% | 82.0% | 1607 |
+| 1 — churns | 40.1% | 69.5% | 51.0% | 393 |
+| **Accuracy** | — | — | **73.6%** | **2000** |
 
----
+#### Random Forest (TN=1433, FP=174, FN=133, TP=260)
+
+| Class | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| 0 — stays | 91.5% | 89.2% | 90.3% | 1607 |
+| 1 — churns | 59.9% | 66.2% | 62.9% | 393 |
+| **Accuracy** | — | — | **84.7%** | **2000** |
+
+#### XGBoost @ default 0.50 (TN=1421, FP=186, FN=117, TP=276)
+
+| Class | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| 0 — stays | 92.4% | 88.4% | 90.4% | 1607 |
+| 1 — churns | 59.7% | 70.2% | 64.5% | 393 |
+| **Accuracy** | — | — | **84.9%** | **2000** |
+
+> **Context:** Accuracy alone is misleading for imbalanced data (~20% churners).
+> Logistic Regression hits 73.6% accuracy but recall on churners (69.5%) comes at the
+> cost of terrible precision (40.1%) — it flags almost half the non-churners as churn.
+> XGBoost achieves the best balance — 84.9% accuracy with 70.2% churn recall before
+> threshold tuning, which climbs to **80%** after tuning @ 0.35.
 
 ## Threshold Tuning
 
@@ -391,7 +412,6 @@ dependencies change, not on every code change.
   could further improve minority class performance
 - Model trained on a public benchmark dataset — real bank data would require retraining
   and likely different feature engineering
-- Haar cascade (used in other projects) not applicable here — no computer vision component
 - No model monitoring in place — input feature distributions may drift in production
   over time without detection
 
@@ -405,7 +425,7 @@ dependencies change, not on every code change.
 - [ ] **Model monitoring** — track input feature drift and prediction distribution shift in production using Evidently AI
 - [ ] **A/B testing framework** — measure whether retention campaigns triggered by model predictions actually reduce churn
 - [ ] **CI/CD pipeline** — automate model retraining and Docker image rebuild on new data with GitHub Actions
-- [ ] **Unfreeze additional features** — incorporate transaction frequency, login history, and customer service call data if available
+- [ ] **Richer features** — incorporate transaction frequency, login history, and customer service call data if available
 
 ---
 
